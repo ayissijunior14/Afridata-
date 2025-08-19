@@ -866,7 +866,7 @@ function showHelpAfterError(errorType = 'général') {
     transform: translateY(0);
 }
 </style>
-    <!-- Ajouter ce code avant la fermeture du body </body> -->
+<!-- Ajouter ce code avant la fermeture du body </body> -->
 <div id="assistance-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 10000; display: flex; justify-content: center; align-items: center;">
     <div style="background: linear-gradient(135deg, var(--mtn-yellow) 0%, var(--orange) 100%); padding: 30px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); width: 90%; max-width: 400px; text-align: center; position: relative; border: 3px solid white; animation: popupScale 0.5s ease-out;">
         <button onclick="closeAssistancePopup()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; color: white; cursor: pointer; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2);">×</button>
@@ -898,6 +898,10 @@ function showHelpAfterError(errorType = 'général') {
 // Configuration
 const whatsappLink = "https://wa.me/message/NWFNMIE3Y5ZEM1";
 
+// Variables de suivi du temps
+let timeSpentOnSite = 0;
+let popupTimer = null;
+
 // Afficher la popup
 function showAssistancePopup() {
     const popup = document.getElementById('assistance-popup');
@@ -905,6 +909,9 @@ function showAssistancePopup() {
     
     // Empêcher le défilement du body
     document.body.style.overflow = 'hidden';
+    
+    // Arrêter le compteur de temps
+    clearInterval(popupTimer);
 }
 
 // Fermer la popup
@@ -928,13 +935,43 @@ function redirectToWhatsApp() {
     console.log('Redirection vers WhatsApp depuis la popup');
 }
 
-// Afficher après 45 secondes
-setTimeout(() => {
+// Démarrer le compteur de temps
+function startTimeTracker() {
+    popupTimer = setInterval(() => {
+        timeSpentOnSite++;
+        
+        // Afficher la popup après 60 secondes
+        if (timeSpentOnSite === 60 && !sessionStorage.getItem('popupShown')) {
+            showAssistancePopup();
+        }
+        
+        // Arrêter après 120 secondes max
+        if (timeSpentOnSite >= 120) {
+            clearInterval(popupTimer);
+        }
+    }, 1000); // Mise à jour chaque seconde
+}
+
+// Démarrer le suivi du temps au chargement de la page
+window.addEventListener('load', function() {
     // Vérifier si la popup n'a pas déjà été vue dans cette session
     if (!sessionStorage.getItem('popupShown')) {
-        showAssistancePopup();
+        startTimeTracker();
     }
-}, 45000); // 45 secondes
+});
+
+// Réinitialiser le temps si l'utilisateur change d'onglet
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        // Page cachée, pause du compteur
+        clearInterval(popupTimer);
+    } else {
+        // Page visible, reprise du compteur
+        if (!sessionStorage.getItem('popupShown')) {
+            startTimeTracker();
+        }
+    }
+});
 
 // Fermer avec la touche Échap
 document.addEventListener('keydown', function(event) {
