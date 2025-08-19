@@ -636,7 +636,7 @@
             const mtnPrefixes = {
                 'ci': ['07', '05', '01'], // Côte d'Ivoire
                 'sn': ['77', '76', '78'], // Sénégal
-                'cm': ['67', '680', '650', '651', '652', '653', '654'], // Cameroun
+                'cm': ['67', '680', '650', '651', '652', '653', '654'] // Cameroun
                 // Add more countries and prefixes as needed
               
             };
@@ -674,7 +674,7 @@ localStorage.setItem('verifiedNumbers', JSON.stringify(verifiedNumbers));
             
             // Show appropriate message
             if (isVerified) {
-                showMessage("Vérification réussie, vous êtes éligible !", "success");
+                showMessage("Vérification réussie, vous êtes éligible au forfait sélectioné !", "success");
                 operatorDisplay.textContent = `Opérateur détecté : ${actualOperator}`;
                 payNowBtn.style.display = "block";
                 
