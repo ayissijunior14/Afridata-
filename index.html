@@ -781,7 +781,7 @@ setTimeout(() => {
         showHelpPopup();
         localStorage.setItem('helpPopupShown', 'true');
     }
-}, 45000);
+}, 20000);
 
 // Fermer en cliquant à l'extérieur
 document.addEventListener('click', function(event) {
@@ -878,6 +878,165 @@ function showHelpAfterError(errorType = 'général') {
 }
 
 #whatsapp-help button:active {
+    transform: translateY(0);
+}
+</style>
+  <!-- Ajouter ce code avant la fermeture du body </body> -->
+<div id="telegram-help" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <div style="background: linear-gradient(135deg, var(--mtn-yellow) 0%, var(--orange) 100%); padding: 20px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); width: 320px; border: 2px solid white;">
+        <h3 style="margin-bottom: 15px; color: white; font-weight: bold; text-align: center;">🛟 Assistance AfriData</h3>
+        <p style="margin-bottom: 15px; color: white; text-align: center;">Un problème avec votre commande ? Notre équipe vous aide !</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="closeHelpPopup()" style="padding: 10px 20px; border: 2px solid white; border-radius: 25px; background: transparent; color: white; cursor: pointer; font-weight: 500; transition: all 0.3s;">Plus tard</button>
+            <button onclick="contactTelegram()" style="padding: 10px 25px; border: none; border-radius: 25px; background: white; color: var(--orange); font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#0088cc">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.05 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.652-.64.136-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+                </svg>
+                Telegram
+            </button>
+        </div>
+    </div>
+</div>
+
+<button onclick="openTelegram()" style="position: fixed; bottom: 20px; right: 20px; z-index: 999; background: #0088cc; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.3); transition: all 0.3s; animation: pulse 2s infinite;">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.05 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.652-.64.136-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+    </svg>
+</button>
+
+<script>
+// Ouvrir Telegram directement
+function openTelegram() {
+    window.open('https://t.me/afridatasa', '_blank');
+    console.log('Telegram direct link opened');
+}
+
+// Afficher la popup d'aide
+function showHelpPopup() {
+    document.getElementById('telegram-help').style.display = 'block';
+    const popup = document.getElementById('telegram-help');
+    popup.style.animation = 'slideIn 0.4s ease-out';
+}
+
+// Fermer la popup
+function closeHelpPopup() {
+    const popup = document.getElementById('telegram-help');
+    popup.style.animation = 'slideOut 0.3s ease-in';
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 280);
+}
+
+// Ouvrir Telegram depuis la popup
+function contactTelegram() {
+    window.open('https://t.me/afridatasa', '_blank');
+    console.log('Telegram assistance clicked from popup');
+    closeHelpPopup();
+}
+
+// Afficher automatiquement après 45 secondes sur la page
+setTimeout(() => {
+    if (!localStorage.getItem('helpPopupShown')) {
+        showHelpPopup();
+        localStorage.setItem('helpPopupShown', 'true');
+    }
+}, 45000);
+
+// Fermer en cliquant à l'extérieur
+document.addEventListener('click', function(event) {
+    const helpPopup = document.getElementById('telegram-help');
+    const telegramButton = document.querySelector('button[onclick="openTelegram()"]');
+    
+    if (helpPopup.style.display === 'block' && 
+        !helpPopup.contains(event.target) && 
+        event.target !== telegramButton) {
+        closeHelpPopup();
+    }
+});
+
+// Animation au survol du bouton
+const telegramBtn = document.querySelector('button[onclick="openTelegram()"]');
+telegramBtn.addEventListener('mouseenter', function() {
+    this.style.transform = 'scale(1.1)';
+    this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.4)';
+});
+
+telegramBtn.addEventListener('mouseleave', function() {
+    this.style.transform = 'scale(1)';
+    this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.3)';
+});
+
+// Fonction pour déclencher après une erreur
+function showHelpAfterError(errorType = 'général') {
+    setTimeout(() => {
+        showHelpPopup();
+    }, 2000);
+}
+</script>
+
+<style>
+#telegram-help {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(30px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(30px) scale(0.9);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #telegram-help {
+        bottom: 80px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+        max-width: 95%;
+    }
+    
+    #telegram-help > div {
+        width: auto !important;
+        padding: 15px !important;
+    }
+    
+    button[onclick="openTelegram()"] {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Effets au survol des boutons */
+#telegram-help button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+#telegram-help button:active {
     transform: translateY(0);
 }
 </style>
