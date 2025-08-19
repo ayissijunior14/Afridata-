@@ -421,7 +421,7 @@
                         <li>Activation rapide (30min après le paiement)</li>
                     </ul>
                     <div class="package-price">2 100 FCFA</div>
-                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                    <button class="buy-btn" data-operator="mtn" data-package="10go">Acheter maintenant</button>
                 </div>
             </div>
             
@@ -440,7 +440,7 @@
                         <li>Activation rapide (30min après le paiement)</li>
                     </ul>
                     <div class="package-price">2 100 FCFA</div>
-                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                    <button class="buy-btn" data-operator="orange" data-package="10go">Acheter maintenant</button>
                 </div>
             </div>
           <div class="package-card mtn">
@@ -457,7 +457,7 @@
                         <li>Activation rapide (30min après le paiement)</li>
                     </ul>
                     <div class="package-price">5 100 FCFA</div>
-                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                    <button class="buy-btn" data-operator="mtn" data-package="1go">Acheter maintenant</button>
                 </div>
             </div>
                     <div class="package-card orange">
@@ -474,7 +474,7 @@
                         <li>Activation rapide (30min après le paiement)</li>
                     </ul>
                     <div class="package-price">5 100 FCFA</div>
-                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                    <button class="buy-btn" data-operator="orange" data-package="1go">Acheter maintenant</button>
                 </div>
             </div>
           <div class="package-card mtn">
@@ -491,7 +491,7 @@
                         <li>Activation rapide (30min après le paiement)</li>
                     </ul>
                     <div class="package-price">8 600 FCFA</div>
-                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                    <button class="buy-btn" data-operator="mtn" data-package="45go">Acheter maintenant</button>
                 </div>
             </div>
                     <div class="package-card orange">
@@ -508,10 +508,11 @@
                         <li>Activation rapide (30min après le paiement)</li>
                     </ul>
                     <div class="package-price">8 600 FCFA</div>
-                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                    <button class="buy-btn" data-operator="orange" data-package="45go">Acheter maintenant</button>
                 </div>
             </div>
         </div>
+      <input type="hidden" id="selectedPackage">
     </section>
     
     <section id="how-it-works" class="packages" style="background-color: white; padding: 3rem; margin-top: 2rem;">
@@ -565,7 +566,7 @@
             <a id="payNowBtn" class="pay-now-btn" href="https://checkout.fapshi.com/link/69335386" target="_blank" style="display: none;">Payer maintenant</a>
         </div>
     </div>
-    
+
     <script>
         // Modal functionality
         const modal = document.getElementById("verificationModal");
@@ -713,6 +714,61 @@ localStorage.setItem('verifiedNumbers', JSON.stringify(verifiedNumbers));
             operatorDisplay.textContent = "";
             payNowBtn.style.display = "none";
         }
+      // Dans la partie JavaScript, remplacer ou ajouter ce code :
+
+// Tableau associatif des liens Fapshi par forfait
+const fapshiLinks = {
+  "mtn_10go": "https://checkout.fapshi.com/link/69335386",
+  "orange_10go": "https://checkout.fapshi.com/link/69335386",
+  "mtn_1go": "https://checkout.fapshi.com/link/22005018",
+  "orange_1go": "https://checkout.fapshi.com/link/22005018"
+  "mtn_45go": "https://checkout.fapshi.com/link/07959409"
+  "orange_45go": "https://checkout.fapshi.com/link/07959409"
+  // Ajouter d'autres liens selon vos forfaits
+};
+
+// Modifier la fonction verifyNumber pour inclure le type de forfait
+function verifyNumber(country, phoneNumber, selectedOperator, packageType) {
+  // ... (le reste de votre code existant)
+
+  if (isVerified) {
+    showMessage("Vérification réussie !", "success");
+    operatorDisplay.textContent = `Opérateur détecté : ${actualOperator}`;
+    payNowBtn.style.display = "block";
+    
+    // Stocker les infos pour le paiement
+    payNowBtn.dataset.operator = selectedOperator;
+    payNowBtn.dataset.package = packageType;
+  }
+}
+
+// Mettre à jour le gestionnaire de clic pour le bouton Payer
+payNowBtn.addEventListener("click", function() {
+  const operator = this.dataset.operator;
+  const packageType = this.dataset.package;
+  const linkKey = `${operator}_${packageType}`;
+  
+  if (fapshiLinks[linkKey]) {
+    window.open(fapshiLinks[linkKey], "_blank");
+  } else {
+    alert("Lien de paiement non configuré pour ce forfait");
+  }
+  
+  modal.style.display = "none";
+  resetVerificationForm();
+});
+
+// Modifier les boutons "Acheter maintenant" pour inclure le type de forfait
+document.querySelectorAll('.buy-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    const operator = this.getAttribute('data-operator');
+    const packageType = this.getAttribute('data-package'); // Ajouter data-package="10go" aux boutons
+    document.getElementById("selectedOperator").value = operator;
+    document.getElementById("selectedPackage").value = packageType;
+    modal.style.display = "block";
+    resetVerificationForm();
+  });
+});
     </script>
   <!-- Ajouter ce code avant la fermeture du body </body> -->
 <div id="whatsapp-help" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
