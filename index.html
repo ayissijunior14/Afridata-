@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Afridata 2</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriData - Forfaits Internet MTN & Orange</title>
+    <style>
+        :root {
+            --mtn-yellow: #FFC600;
+            --mtn-dark: #000000;
+            --orange: #FF7900;
+            --orange-dark: #F16E00;
+            --white: #FFFFFF;
+            --gray: #F5F5F5;
+            --dark-gray: #333333;
+            --error-red: #FF3333;
+            --success-green: #28A745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--gray);
+            color: var(--dark-gray);
+        }
+        
+        header {
+            background: linear-gradient(90deg, var(--mtn-yellow) 0%, var(--orange) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .operator-logos {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .operator-logos img {
+            height: 30px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: var(--white);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .packages {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .packages h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .package-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .package-header {
+            padding: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .mtn .package-header {
+            background-color: var(--mtn-yellow);
+        }
+        
+        .orange .package-header {
+            background-color: var(--orange);
+        }
+        
+        .package-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .package-body {
+            padding: 1.5rem;
+        }
+        
+        .package-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .package-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .package-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .package-features li::before {
+            content: "✓";
+            margin-right: 0.5rem;
+            color: green;
+            font-weight: bold;
+        }
+        
+        .package-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .mtn .buy-btn {
+            background-color: var(--mtn-yellow);
+            color: var(--mtn-dark);
+        }
+        
+        .mtn .buy-btn:hover {
+            background-color: #e6b800;
+        }
+        
+        .orange .buy-btn {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .orange .buy-btn:hover {
+            background-color: var(--orange-dark);
+        }
+        
+        .highlight {
+            background-color: #fff9e6;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--dark-gray);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .verify-btn {
+            background-color: var(--orange);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .verify-btn:hover {
+            background-color: var(--orange-dark);
+        }
+        
+        .message {
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+        
+        .error {
+            background-color: #FFDDDD;
+            color: var(--error-red);
+            border: 1px solid var(--error-red);
+            display: block;
+        }
+        
+        .success {
+            background-color: #DDFFDD;
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+            display: block;
+        }
+        
+        .operator-display {
+            font-weight: bold;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .pay-now-btn {
+            display: none;
+            background-color: var(--success-green);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .pay-now-btn:hover {
+            background-color: #218838;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 30% auto;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">AfriData</div>
+        <nav>
+            <ul>
+                <li><a href="#packages">Forfaits</a></li>
+                <li><a href="#how-it-works">Comment ça marche</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="operator-logos">
+            <img src="https://www.mtn.com/wp-content/themes/mtn-theme/assets/img/logo.svg" alt="MTN Logo">
+            <img src="https://www.orange.com/sites/orangecom/files/styles/asset_medium/public/2021-06/logo-orange.png" alt="Orange Logo">
+        </div>
+    </header>
+    
+    <section class="hero">
+        <h1>Forfaits Internet Big Data 30 jours</h1>
+        <p>Rechargez facilement votre forfait internet MTN ou Orange depuis notre plateforme sécurisée. Couverture dans toute l'Afrique.</p>
+    </section>
+    
+    <section id="packages" class="packages">
+        <h2>Nos Forfaits Disponibles</h2>
+        
+        <div class="package-grid">
+            <!-- MTN Package -->
+            <div class="package-card mtn">
+                <div class="package-header">
+                    <h3>MTN Afrique</h3>
+                    <p>Forfait Internet 10Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>10Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays MTN Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 500Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">2 100 FCFA</div>
+                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                </div>
+            </div>
+            
+            <!-- Orange Package -->
+            <div class="package-card orange">
+                <div class="package-header">
+                    <h3>Orange Afrique</h3>
+                    <p>Forfait Internet 10Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>10Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays Orange Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 500Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">2 100 FCFA</div>
+                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                </div>
+            </div>
+          <div class="package-card mtn">
+                <div class="package-header">
+                    <h3>MTN Afrique</h3>
+                    <p>Forfait Internet 1Go/j pendant 30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>1Go de données par jour valides pendant 30 jours</li>
+                        <li>Couverture dans tous les pays MTN Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Dépot de data chaque jours a l'heure de la souscription au forfait</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">5 100 FCFA</div>
+                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                </div>
+            </div>
+                    <div class="package-card orange">
+                <div class="package-header">
+                    <h3>Orange Afrique</h3>
+                    <p>Forfait Internet 1Go/j pendant 30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>1Go de données par jour valides pendant 30 jours</li>
+                        <li>Couverture dans tous les pays Orange Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Dépot de data chaque jours a l'heure de la souscription au forfait</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">5 100 FCFA</div>
+                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                </div>
+            </div>
+          <div class="package-card mtn">
+                <div class="package-header">
+                    <h3>MTN Afrique</h3>
+                    <p>Forfait Internet 45Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>45Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays MTN Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 1024Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">8 600 FCFA</div>
+                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                </div>
+            </div>
+                    <div class="package-card orange">
+                <div class="package-header">
+                    <h3>Orange Afrique</h3>
+                    <p>Forfait Internet 45Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>45Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays Orange Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 1024Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">8 600 FCFA</div>
+                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how-it-works" class="packages" style="background-color: white; padding: 3rem; margin-top: 2rem;">
+        <h2>Comment ça marche ?</h2>
+        <div style="max-width: 800px; margin: 0 auto; padding: 1rem;">
+            <ol style="list-style-position: inside; line-height: 2;">
+                <li><span class="highlight">Choisissez</span> votre opérateur (MTN ou Orange) et votre forfait</li>
+                <li><span class="highlight">Sélectionnez</span> votre pays et entrez votre numéro pour vérification</li>
+                <li><span class="highlight">Confirmez</span> que votre numéro est bien sur le réseau sélectionné</li>
+                <li><span class="highlight">Payer</span> en ligne de manière sécurisée via Fapshi</li>
+                <li><span class="highlight">Recevez</span> votre forfait par SMS dans les 30 minutes après le paiement</li>
+            </ol>
+        </div>
+    </section>
+    
+    <footer id="contact">
+        <div class="footer-links">
+            <a href="#">Conditions générales</a>
+            <a href="#">Politique de confidentialité</a>
+            <a href="mailto:contact@afridata.com">Contact</a>
+        </div>
+        <p>© 2025 AfriData - Tous droits réservés</p>
+        <p>Service disponible uniquement pour les opérateurs MTN et Orange en Afrique</p>
+    </footer>
+    
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Vérification du numéro</h2>
+            <form id="verificationForm">
+                <div class="form-group">
+                    <label for="country">Pays :</label>
+                    <select id="country" required>
+                        <option value="">Sélectionnez votre pays</option>
+                        <option value="ci">Côte d'Ivoire</option>
+                        <option value="sn">Sénégal</option>
+                        <option value="cm">Cameroun</option>
+                        <option value="bj">Bénin</option>
+                        <option value="ne">Niger</option>
+                        <option value="tg">Togo</option>
+                        <option value="bf">Burkina Faso</option>
+                        <option value="ga">Gabon</option>
+                        <option value="cg">Congo</option>
+                        <option value="cd">RDC</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Numéro de téléphone :</label>
+                    <input type="tel" id="phoneNumber" placeholder="Ex: 677889900" required>
+                </div>
+                <input type="hidden" id="selectedOperator">
+                <button type="submit" class="verify-btn">Vérifier le numéro</button>
+            </form>
+            <div id="message" class="message"></div>
+            <div id="operatorDisplay" class="operator-display"></div>
+            <a id="payNowBtn" class="pay-now-btn" href="https://checkout.fapshi.com/link/69335386" target="_blank" style="display: none;">Payer maintenant</a>
+        </div>
+    </div>
+    
+    <script>
+        // Modal functionality
+        const modal = document.getElementById("verificationModal");
+        const closeBtn = document.querySelector(".close");
+        const buyButtons = document.querySelectorAll(".buy-btn");
+        const verificationForm = document.getElementById("verificationForm");
+        const messageDiv = document.getElementById("message");
+        const operatorDisplay = document.getElementById("operatorDisplay");
+        const payNowBtn = document.getElementById("payNowBtn");
+        
+        // Open modal when buy button is clicked
+        buyButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                const operator = this.getAttribute("data-operator");
+                document.getElementById("selectedOperator").value = operator;
+                modal.style.display = "block";
+                resetVerificationForm();
+            });
+        });
+        
+        // Close modal
+        closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+            resetVerificationForm();
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                resetVerificationForm();
+            }
+        });
+        
+        // Form submission
+        verificationForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const country = document.getElementById("country").value;
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            const selectedOperator = document.getElementById("selectedOperator").value;
+            
+            // Reset messages
+            messageDiv.className = "message";
+            messageDiv.style.display = "none";
+            operatorDisplay.textContent = "";
+            payNowBtn.style.display = "none";
+            
+            // Simple validation
+            if (!country) {
+                showMessage("Veuillez sélectionner votre pays", "error");
+                return;
+            }
+            
+            if (!phoneNumber) {
+                showMessage("Veuillez entrer votre numéro de téléphone", "error");
+                return;
+            }
+            
+            // Simulate verification
+            setTimeout(() => {
+                verifyNumber(country, phoneNumber, selectedOperator);
+            }, 1000);
+        });
+        
+        function verifyNumber(country, phoneNumber, selectedOperator) {
+            // This is a simulation - in reality you would call an API to verify the number
+            
+            // Extract first digits based on country (simplified)
+            let prefix = phoneNumber.substring(0, 2);
+            
+            // Fake verification rules for demonstration
+            let isVerified = false;
+            let actualOperator = "";
+            
+            // MTN prefixes (simplified for demo)
+            const mtnPrefixes = {
+                'ci': ['07', '05', '01'], // Côte d'Ivoire
+                'sn': ['77', '76', '78'], // Sénégal
+                'cm': ['67', '680', '650', '651', '652', '653', '654']  // Cameroun
+                // Add more countries and prefixes as needed
+              
+            };
+            
+            // Orange prefixes (simplified for demo)
+            const orangePrefixes = {
+                'ci': ['07', '05', '01'], // Côte d'Ivoire
+                'sn': ['77', '76', '78'], // Sénégal
+                'cm': ['659', '688','686','687','688','689','69', '640','655','656', '657','658']  // Cameroun
+           
+                // Add more countries and prefixes as needed
+            };
+          // Dans la fonction verifyNumber, après la vérification :
+const verificationEntry = {
+    timestamp: Date.now(),
+    country: country,
+    phoneNumber: phoneNumber,
+    operator: actualOperator,
+    status: isVerified ? "success" : "failed"
+};
+
+const verifiedNumbers = JSON.parse(localStorage.getItem('verifiedNumbers') || '[]');
+verifiedNumbers.push(verificationEntry);
+localStorage.setItem('verifiedNumbers', JSON.stringify(verifiedNumbers));
+            
+            // Check if number matches selected operator's prefixes for the country
+            if (selectedOperator === "mtn" && mtnPrefixes[country] && mtnPrefixes[country].includes(prefix)) {
+                isVerified = true;
+                actualOperator = "MTN";
+            } 
+            else if (selectedOperator === "orange" && orangePrefixes[country] && orangePrefixes[country].includes(prefix)) {
+                isVerified = true;
+                actualOperator = "Orange";
+            }
+            
+            // Show appropriate message
+            if (isVerified) {
+                showMessage("Vérification réussie, vous êtes éligible !", "success");
+                operatorDisplay.textContent = `Opérateur détecté : ${actualOperator}`;
+                payNowBtn.style.display = "block";
+                
+                // Store verified data in localStorage for payment reference
+                localStorage.setItem('verifiedData', JSON.stringify({
+                    country: country,
+                    phoneNumber: phoneNumber,
+                    operator: actualOperator,
+                    selectedPackage: selectedOperator === "mtn" ? "10Go MTN" : "10Go Orange",
+                    price: selectedOperator === "mtn" ? "12000 FCFA" : "11500 FCFA"
+                }));
+            } else {
+                showMessage("Ce numéro ne semble pas appartenir à l'opérateur sélectionné. Veuillez vérifier votre numéro et votre choix d'opérateur.", "error");
+            }
+        }
+        
+        function showMessage(message, type) {
+            messageDiv.textContent = message;
+            messageDiv.className = "message " + type;
+            messageDiv.style.display = "block";
+        }
+        
+        function resetVerificationForm() {
+            verificationForm.reset();
+            messageDiv.className = "message";
+            messageDiv.style.display = "none";
+            operatorDisplay.textContent = "";
+            payNowBtn.style.display = "none";
+        }
+    </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
