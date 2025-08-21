@@ -546,7 +546,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phoneNumber">Numéro de téléphone :</label>
-                    <input type="tel" id="phoneNumber" placeholder="Ex: 677889900" required>
+                    <input type="tel" id="phoneNumber" placeholder="Ex: 6 xx xx xx xx" required>
                 </div>
                 <input type="hidden" id="selectedOperator">
                 <button type="submit" class="verify-btn">Vérifier le numéro</button>
@@ -673,7 +673,7 @@ localStorage.setItem('verifiedNumbers', JSON.stringify(verifiedNumbers));
             }
             
             // Show appropriate message
-            if (isVerified) {
+            if (phoneNumber) {
                 showMessage("Vérification réussie, vous êtes éligible au forfait sélectioné !", "success");
                 operatorDisplay.textContent = `Opérateur détecté : ${actualOperator}`;
                 payNowBtn.style.display = "block";
