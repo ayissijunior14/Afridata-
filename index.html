@@ -558,39 +558,35 @@
     </div>
     
     <script>
-        // Modal functionality
-        const modal = document.getElementById("verificationModal");
-        const closeBtn = document.querySelector(".close");
-        const buyButtons = document.querySelectorAll(".buy-btn");
-        const verificationForm = document.getElementById("verificationForm");
-        const messageDiv = document.getElementById("message");
-        const operatorDisplay = document.getElementById("operatorDisplay");
-        const payNowBtn = document.getElementById("payNowBtn");
+        // Remplacer le code existant par :
+document.getElementById('payNowBtn').addEventListener('click', function() {
+    const operator = this.dataset.operator;
+    const packageType = this.dataset.package;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const country = document.getElementById('country').value;
+    const linkKey = `${operator}_${packageType}`;
+    
+    if (fapshiLinks[linkKey]) {
+        // Stocker les données de la commande
+        const orderData = {
+            operator: operator === 'mtn' ? 'MTN Afrique' : 'Orange Afrique',
+            package: packageType === '10go' ? '10Go - 30 jours' : '5Go - 30 jours',
+            phoneNumber: phoneNumber,
+            country: document.getElementById('country').options[document.getElementById('country').selectedIndex].text,
+            price: operator === 'mtn' ? '12 000 FCFA' : '11 500 FCFA',
+            paymentLink: fapshiLinks[linkKey]
+        };
         
-        // Open modal when buy button is clicked
-        buyButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                const operator = this.getAttribute("data-operator");
-                document.getElementById("selectedOperator").value = operator;
-                modal.style.display = "block";
-                resetVerificationForm();
-            });
-        });
+        // Sauvegarder dans localStorage
+        localStorage.setItem('currentOrder', JSON.stringify(orderData));
         
-        // Close modal
-        closeBtn.addEventListener("click", function() {
-            modal.style.display = "none";
-            resetVerificationForm();
-        });
+        // Rediriger vers la page de récapitulatif
+        window.location.href = 'recapitulatif.html';
         
-        // Close modal when clicking outside
-        window.addEventListener("click", function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-                resetVerificationForm();
-            }
-        });
-        
+    } else {
+        alert("Lien de paiement non configuré pour ce forfait");
+    }
+}); 
         // Form submission
         verificationForm.addEventListener("submit", function(e) {
             e.preventDefault();
