@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriData - Forfaits Internet MTN & Orange</title>
+    <style>
+        :root {
+            --mtn-yellow: #FFC600;
+            --mtn-dark: #000000;
+            --orange: #FF7900;
+            --orange-dark: #F16E00;
+            --white: #FFFFFF;
+            --gray: #F5F5F5;
+            --dark-gray: #333333;
+            --error-red: #FF3333;
+            --success-green: #28A745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--gray);
+            color: var(--dark-gray);
+        }
+        
+        header {
+            background: linear-gradient(90deg, var(--mtn-yellow) 0%, var(--orange) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .operator-logos {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .operator-logos img {
+            height: 30px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: var(--white);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .packages {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .packages h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .package-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .package-header {
+            padding: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .mtn .package-header {
+            background-color: var(--mtn-yellow);
+        }
+        
+        .orange .package-header {
+            background-color: var(--orange);
+        }
+        
+        .package-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .package-body {
+            padding: 1.5rem;
+        }
+        
+        .package-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .package-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .package-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .package-features li::before {
+            content: "✓";
+            margin-right: 0.5rem;
+            color: green;
+            font-weight: bold;
+        }
+        
+        .package-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .mtn .buy-btn {
+            background-color: var(--mtn-yellow);
+            color: var(--mtn-dark);
+        }
+        
+        .mtn .buy-btn:hover {
+            background-color: #e6b800;
+        }
+        
+        .orange .buy-btn {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .orange .buy-btn:hover {
+            background-color: var(--orange-dark);
+        }
+        
+        .highlight {
+            background-color: #fff9e6;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--dark-gray);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .verify-btn {
+            background-color: var(--orange);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .verify-btn:hover {
+            background-color: var(--orange-dark);
+        }
+        
+        .message {
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+        
+        .error {
+            background-color: #FFDDDD;
+            color: var(--error-red);
+            border: 1px solid var(--error-red);
+            display: block;
+        }
+        
+        .success {
+            background-color: #DDFFDD;
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+            display: block;
+        }
+        
+        .operator-display {
+            font-weight: bold;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .pay-now-btn {
+            display: none;
+            background-color: var(--success-green);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .pay-now-btn:hover {
+            background-color: #218838;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 30% auto;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">AfriData</div>
+        <nav>
+            <ul>
+                <li><a href="#packages">Forfaits</a></li>
+                <li><a href="#how-it-works">Comment ça marche</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="operator-logos">
+            <img src="data:image/png;base64,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" alt="MTN Logo">
+            <img src="data:image/png;base64,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" alt="Orange Logo">
+        </div>
+    </header>
+    
+    <section class="hero">
+        <h1>Forfaits Internet Big Data 30 jours</h1>
+        <p>Rechargez facilement votre forfait internet MTN ou Orange depuis notre plateforme sécurisée. Couverture dans toute l'Afrique.</p>
+    </section>
+    
+    <section id="packages" class="packages">
+        <h2>Nos Forfaits Disponibles</h2>
+        
+        <div class="package-grid">
+            <!-- MTN Package -->
+            <div class="package-card mtn">
+                <div class="package-header">
+                    <h3>MTN Afrique</h3>
+                    <p>Forfait Internet 10Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>10Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays MTN Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 500Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">2 100 FCFA</div>
+                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                </div>
+            </div>
+            
+            <!-- Orange Package -->
+            <div class="package-card orange">
+                <div class="package-header">
+                    <h3>Orange Afrique</h3>
+                    <p>Forfait Internet 10Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>10Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays Orange Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 500Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">2 100 FCFA</div>
+                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                </div>
+            </div>
+          <div class="package-card mtn">
+                <div class="package-header">
+                    <h3>MTN Afrique</h3>
+                    <p>Forfait Internet 1Go/j pendant 30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>1Go de données par jour valides pendant 30 jours</li>
+                        <li>Couverture dans tous les pays MTN Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Dépot de data chaque jours a l'heure de la souscription au forfait</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">5 100 FCFA</div>
+                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                </div>
+            </div>
+                    <div class="package-card orange">
+                <div class="package-header">
+                    <h3>Orange Afrique</h3>
+                    <p>Forfait Internet 1Go/j pendant 30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>1Go de données par jour valides pendant 30 jours</li>
+                        <li>Couverture dans tous les pays Orange Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Dépot de data chaque jours a l'heure de la souscription au forfait</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">5 100 FCFA</div>
+                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                </div>
+            </div>
+          <div class="package-card mtn">
+                <div class="package-header">
+                    <h3>MTN Afrique</h3>
+                    <p>Forfait Internet 45Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>45Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays MTN Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 1024Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">8 600 FCFA</div>
+                    <button class="buy-btn" data-operator="mtn">Acheter maintenant</button>
+                </div>
+            </div>
+                    <div class="package-card orange">
+                <div class="package-header">
+                    <h3>Orange Afrique</h3>
+                    <p>Forfait Internet 45Go/30j</p>
+                </div>
+                <div class="package-body">
+                    <ul class="package-features">
+                        <li>45Go de données en bloc valables 30 jours</li>
+                        <li>Couverture dans tous les pays Orange Afrique</li>
+                        <li>Vitesse 4G/LTE</li>
+                        <li>Inclus un bonus de 1024Mo valides  48h</li>
+                        <li>Activation rapide (30min après le paiement)</li>
+                    </ul>
+                    <div class="package-price">8 600 FCFA</div>
+                    <button class="buy-btn" data-operator="orange">Acheter maintenant</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how-it-works" class="packages" style="background-color: white; padding: 3rem; margin-top: 2rem;">
+        <h2>Comment ça marche ?</h2>
+        <div style="max-width: 800px; margin: 0 auto; padding: 1rem;">
+            <ol style="list-style-position: inside; line-height: 2;">
+                <li><span class="highlight">Choisissez</span> votre opérateur (MTN ou Orange) et votre forfait</li>
+                <li><span class="highlight">Sélectionnez</span> votre pays et entrez votre numéro pour vérification</li>
+                <li><span class="highlight">Confirmez</span> que votre numéro est bien sur le réseau sélectionné</li>
+                <li><span class="highlight">Payer</span> en ligne de manière sécurisée via Fapshi</li>
+                <li><span class="highlight">Recevez</span> votre forfait par SMS dans les 30 minutes après le paiement</li>
+            </ol>
+        </div>
+    </section>
+    
+    <footer id="contact">
+        <div class="footer-links">
+            <a href="https://wa.me/message/NWFNMIE3Y5ZEM1">Conditions générales</a>
+            <a href="https://wa.me/message/NWFNMIE3Y5ZEM1">Politique de confidentialité</a>
+            <a href="https://wa.me/message/NWFNMIE3Y5ZEM1">Contact</a>
+        </div>
+        <p>© 2025 AfriData - Tous droits réservés</p>
+        <p>Service disponible uniquement pour les opérateurs MTN et Orange en Afrique</p>
+    </footer>
+    
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Vérification du numéro</h2>
+            <form id="verificationForm">
+                <div class="form-group">
+                    <label for="country">Pays :</label>
+                    <select id="country" required>
+                        <option value="">Sélectionnez votre pays</option>
+                        <option value="ci">Côte d'Ivoire</option>
+                        <option value="sn">Sénégal</option>
+                        <option value="cm">Cameroun</option>
+                        
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Numéro de téléphone :</label>
+                    <input type="tel" id="phoneNumber" placeholder="Ex: 677889900" required>
+                </div>
+                <input type="hidden" id="selectedOperator">
+                <button type="submit" class="verify-btn">Vérifier le numéro</button>
+            </form>
+            <div id="message" class="message"></div>
+            <div id="operatorDisplay" class="operator-display"></div>
+            <a id="payNowBtn" class="pay-now-btn" href="https://checkout.fapshi.com/link/69335386" target="_blank" style="display: none;">Payer maintenant</a>
+        </div>
+    </div>
+    
+    <script>
+        // Modal functionality
+        const modal = document.getElementById("verificationModal");
+        const closeBtn = document.querySelector(".close");
+        const buyButtons = document.querySelectorAll(".buy-btn");
+        const verificationForm = document.getElementById("verificationForm");
+        const messageDiv = document.getElementById("message");
+        const operatorDisplay = document.getElementById("operatorDisplay");
+        const payNowBtn = document.getElementById("payNowBtn");
+        
+        // Open modal when buy button is clicked
+        buyButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                const operator = this.getAttribute("data-operator");
+                document.getElementById("selectedOperator").value = operator;
+                modal.style.display = "block";
+                resetVerificationForm();
+            });
+        });
+        
+        // Close modal
+        closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+            resetVerificationForm();
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                resetVerificationForm();
+            }
+        });
+        
+        // Form submission
+        verificationForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const country = document.getElementById("country").value;
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            const selectedOperator = document.getElementById("selectedOperator").value;
+            
+            // Reset messages
+            messageDiv.className = "message";
+            messageDiv.style.display = "none";
+            operatorDisplay.textContent = "";
+            payNowBtn.style.display = "none";
+            
+            // Simple validation
+            if (!country) {
+                showMessage("Veuillez sélectionner votre pays", "error");
+                return;
+            }
+            
+            if (!phoneNumber) {
+                showMessage("Veuillez entrer votre numéro de téléphone", "error");
+                return;
+            }
+            
+            // Simulate verification
+            setTimeout(() => {
+                verifyNumber(country, phoneNumber, selectedOperator);
+            }, 1000);
+        });
+        
+        function verifyNumber(country, phoneNumber, selectedOperator) {
+            // This is a simulation - in reality you would call an API to verify the number
+            
+            // Extract first digits based on country (simplified)
+            let prefix = phoneNumber.substring(0, 2);
+            
+            // Fake verification rules for demonstration
+            let isVerified = false;
+            let actualOperator = "";
+            
+            // MTN prefixes (simplified for demo)
+            const mtnPrefixes = {
+                'ci': ['07', '05', '01'], // Côte d'Ivoire
+                'sn': ['77', '76', '78'], // Sénégal
+                'cm': ['67', '680', '650', '651', '652', '653', '654'] // Cameroun
+                // Add more countries and prefixes as needed
+              
+            };
+            
+            // Orange prefixes (simplified for demo)
+            const orangePrefixes = {
+                'ci': ['07', '05', '01'], // Côte d'Ivoire
+                'sn': ['77', '76', '78'], // Sénégal
+                'cm': ['659', '688','686','687','688','689','69', '640','655','656', '657','658'], // Cameroun
+           
+                // Add more countries and prefixes as needed
+            };
+          // Dans la fonction verifyNumber, après la vérification :
+const verificationEntry = {
+    timestamp: Date.now(),
+    country: country,
+    phoneNumber: phoneNumber,
+    operator: actualOperator,
+    status: isVerified ? "success" : "failed"
+};
+
+const verifiedNumbers = JSON.parse(localStorage.getItem('verifiedNumbers') || '[]');
+verifiedNumbers.push(verificationEntry);
+localStorage.setItem('verifiedNumbers', JSON.stringify(verifiedNumbers));
+            
+            // Check if number matches selected operator's prefixes for the country
+            if (selectedOperator === "mtn" && mtnPrefixes[country] && mtnPrefixes[country].includes(prefix)) {
+                isVerified = true;
+                actualOperator = "MTN";
+            } 
+            else if (selectedOperator === "orange" && orangePrefixes[country] && orangePrefixes[country].includes(prefix)) {
+                isVerified = true;
+                actualOperator = "Orange";
+            }
+            
+            // Show appropriate message
+            if (isVerified) {
+                showMessage("Vérification réussie, vous êtes éligible au forfait sélectioné !", "success");
+                operatorDisplay.textContent = `Opérateur détecté : ${actualOperator}`;
+                payNowBtn.style.display = "block";
+                
+                // Store verified data in localStorage for payment reference
+                localStorage.setItem('verifiedData', JSON.stringify({
+                    country: country,
+                    phoneNumber: phoneNumber,
+                    operator: actualOperator,
+                    selectedPackage: selectedOperator === "mtn" ? "10Go MTN" : "10Go Orange",
+                    price: selectedOperator === "mtn" ? "12000 FCFA" : "11500 FCFA"
+                }));
+            } else {
+                showMessage("Ce numéro ne semble pas appartenir à l'opérateur sélectionné. Veuillez vérifier votre numéro et votre choix d'opérateur.", "error");
+            }
+        }
+        
+        function showMessage(message, type) {
+            messageDiv.textContent = message;
+            messageDiv.className = "message " + type;
+            messageDiv.style.display = "block";
+        }
+        
+        function resetVerificationForm() {
+            verificationForm.reset();
+            messageDiv.className = "message";
+            messageDiv.style.display = "none";
+            operatorDisplay.textContent = "";
+            payNowBtn.style.display = "none";
+        }
+    </script>
+    <!-- Ajouter ce code avant la fermeture du body </body> -->
+<div id="whatsapp-help" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <div style="background: linear-gradient(135deg, var(--mtn-yellow) 0%, var(--orange) 100%); padding: 20px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); width: 320px; border: 2px solid white;">
+        <h3 style="margin-bottom: 15px; color: white; font-weight: bold; text-align: center;">🛟 Assistance AfriData</h3>
+        <p style="margin-bottom: 15px; color: white; text-align: center;">Un problème avec votre commande ? Notre équipe vous aide !</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="closeHelpPopup()" style="padding: 10px 20px; border: 2px solid white; border-radius: 25px; background: transparent; color: white; cursor: pointer; font-weight: 500; transition: all 0.3s;">Plus tard</button>
+            <button onclick="contactWhatsApp()" style="padding: 10px 25px; border: none; border-radius: 25px; background: white; color: var(--orange); font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+                </svg>
+                WhatsApp
+            </button>
+        </div>
+    </div>
+</div>
+
+<button onclick="openWhatsApp()" style="position: fixed; bottom: 20px; right: 20px; z-index: 999; background: #25D366; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.3); transition: all 0.3s; animation: pulse 2s infinite;">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+    </svg>
+</button>
+
+<script>
+// Ouvrir WhatsApp directement
+function openWhatsApp() {
+    window.open('https://wa.me/message/NWFNMIE3Y5ZEM1', '_blank');
+    
+    // Tracking (optionnel)
+    console.log('WhatsApp direct link opened');
+}
+
+// Afficher la popup d'aide
+function showHelpPopup() {
+    document.getElementById('whatsapp-help').style.display = 'block';
+    const popup = document.getElementById('whatsapp-help');
+    popup.style.animation = 'slideIn 0.4s ease-out';
+}
+
+// Fermer la popup
+function closeHelpPopup() {
+    const popup = document.getElementById('whatsapp-help');
+    popup.style.animation = 'slideOut 0.3s ease-in';
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 280);
+}
+
+// Ouvrir WhatsApp depuis la popup
+function contactWhatsApp() {
+    window.open('https://wa.me/message/NWFNMIE3Y5ZEM1', '_blank');
+    console.log('WhatsApp assistance clicked from popup');
+    closeHelpPopup();
+}
+
+// Afficher automatiquement après 45 secondes sur la page
+setTimeout(() => {
+    if (!localStorage.getItem('helpPopupShown')) {
+        showHelpPopup();
+        localStorage.setItem('helpPopupShown', 'true');
+    }
+}, 45000);
+
+// Fermer en cliquant à l'extérieur
+document.addEventListener('click', function(event) {
+    const helpPopup = document.getElementById('whatsapp-help');
+    const whatsappButton = document.querySelector('button[onclick="openWhatsApp()"]');
+    
+    if (helpPopup.style.display === 'block' && 
+        !helpPopup.contains(event.target) && 
+        event.target !== whatsappButton) {
+        closeHelpPopup();
+    }
+});
+
+// Animation au survol du bouton
+const whatsappBtn = document.querySelector('button[onclick="openWhatsApp()"]');
+whatsappBtn.addEventListener('mouseenter', function() {
+    this.style.transform = 'scale(1.1)';
+    this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.4)';
+});
+
+whatsappBtn.addEventListener('mouseleave', function() {
+    this.style.transform = 'scale(1)';
+    this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.3)';
+});
+
+// Fonction pour déclencher après une erreur
+function showHelpAfterError(errorType = 'général') {
+    setTimeout(() => {
+        showHelpPopup();
+    }, 2000);
+}
+</script>
+
+<style>
+#whatsapp-help {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(30px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(30px) scale(0.9);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #whatsapp-help {
+        bottom: 80px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+        max-width: 95%;
+    }
+    
+    #whatsapp-help > div {
+        width: auto !important;
+        padding: 15px !important;
+    }
+    
+    button[onclick="openWhatsApp()"] {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Effets au survol des boutons */
+#whatsapp-help button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+#whatsapp-help button:active {
+    transform: translateY(0);
+}
+</style>
+<!-- Ajouter ce code avant la fermeture du body </body> -->
+<div id="assistance-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 10000; display: flex; justify-content: center; align-items: center;">
+    <div style="background: linear-gradient(135deg, var(--mtn-yellow) 0%, var(--orange) 100%); padding: 30px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); width: 90%; max-width: 400px; text-align: center; position: relative; border: 3px solid white; animation: popupScale 0.5s ease-out;">
+        <button onclick="closeAssistancePopup()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; color: white; cursor: pointer; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2);">×</button>
+        
+        <div style="margin-bottom: 25px;">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="#25D366" style="margin-bottom: 15px;">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+            </svg>
+            <h2 style="color: white; margin-bottom: 10px; font-size: 24px; font-weight: bold;">Besoin d'aide ?</h2>
+            <p style="color: white; font-size: 16px; line-height: 1.5;">Notre équipe est là pour vous aider à choisir le forfait parfait !</p>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <button onclick="redirectToWhatsApp()" style="padding: 15px 25px; border: none; border-radius: 50px; background: #25D366; color: white; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+                </svg>
+                Discuter sur WhatsApp
+            </button>
+            
+            <button onclick="closeAssistancePopup()" style="padding: 12px 25px; border: 2px solid white; border-radius: 50px; background: transparent; color: white; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                Non merci, je continue ma visite
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Configuration
+const whatsappLink = "https://wa.me/message/NWFNMIE3Y5ZEM1";
+
+// Variables de suivi du temps
+let timeSpentOnSite = 0;
+let popupTimer = null;
+
+// Afficher la popup
+function showAssistancePopup() {
+    const popup = document.getElementById('assistance-popup');
+    popup.style.display = 'flex';
+    
+    // Empêcher le défilement du body
+    document.body.style.overflow = 'hidden';
+    
+    // Arrêter le compteur de temps
+    clearInterval(popupTimer);
+}
+
+// Fermer la popup
+function closeAssistancePopup() {
+    const popup = document.getElementById('assistance-popup');
+    popup.style.display = 'none';
+    
+    // Rétablir le défilement
+    document.body.style.overflow = 'auto';
+    
+    // Marquer comme vu pour cette session
+    sessionStorage.setItem('popupShown', 'true');
+}
+
+// Rediriger vers WhatsApp
+function redirectToWhatsApp() {
+    window.open(whatsappLink, '_blank');
+    closeAssistancePopup();
+    
+    // Tracking (optionnel)
+    console.log('Redirection vers WhatsApp depuis la popup');
+}
+
+// Démarrer le compteur de temps
+function startTimeTracker() {
+    popupTimer = setInterval(() => {
+        timeSpentOnSite++;
+        
+        // Afficher la popup après 60 secondes
+        if (timeSpentOnSite === 60 && !sessionStorage.getItem('popupShown')) {
+            showAssistancePopup();
+        }
+        
+        // Arrêter après 120 secondes max
+        if (timeSpentOnSite >= 120) {
+            clearInterval(popupTimer);
+        }
+    }, 1000); // Mise à jour chaque seconde
+}
+
+// Démarrer le suivi du temps au chargement de la page
+window.addEventListener('load', function() {
+    // Vérifier si la popup n'a pas déjà été vue dans cette session
+    if (!sessionStorage.getItem('popupShown')) {
+        startTimeTracker();
+    }
+});
+
+// Réinitialiser le temps si l'utilisateur change d'onglet
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        // Page cachée, pause du compteur
+        clearInterval(popupTimer);
+    } else {
+        // Page visible, reprise du compteur
+        if (!sessionStorage.getItem('popupShown')) {
+            startTimeTracker();
+        }
+    }
+});
+
+// Fermer avec la touche Échap
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeAssistancePopup();
+    }
+});
+
+// Fermer en cliquant à l'extérieur
+document.getElementById('assistance-popup').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeAssistancePopup();
+    }
+});
+</script>
+
+<style>
+@keyframes popupScale {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#assistance-popup button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+#assistance-popup button:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    #assistance-popup > div {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    #assistance-popup h2 {
+        font-size: 20px;
+    }
+    
+    #assistance-popup p {
+        font-size: 14px;
+    }
+    
+    #assistance-popup button {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
+</style>
+</body>
+</html>
